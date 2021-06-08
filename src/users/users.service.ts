@@ -45,13 +45,17 @@ export class UsersService {
     async createOne(
         userDto: RegisterUserDto|CreateUserDto
     ): Promise<User> {
-        const tempUserLogin = await this.usersModel.findOne({ login: userDto.login }).exec()
+        const tempUserLogin = await this.usersModel.findOne({
+            login: userDto.login
+        }).exec()
 
         if (tempUserLogin) {
             throw new ConflictException('User with this login already exists')
         }
 
-        const tempUserEmail = await this.usersModel.findOne({ email: userDto.email }).exec()
+        const tempUserEmail = await this.usersModel.findOne({
+            email: userDto.email
+        }).exec()
 
         if (tempUserEmail) {
             throw new ConflictException('User with this email already exists')
@@ -78,7 +82,7 @@ export class UsersService {
             {
                 new: true
             }
-        )
+        ).exec()
     }
 
     deleteOne(

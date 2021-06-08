@@ -9,9 +9,4 @@ export class CommentsService {
         @InjectModel(Comment.name)
         private readonly commentsModel: Model<CommentDocument>
     ) {}
-
-    // test
-    findAll() {
-        return this.commentsModel.find().exec()
-    }
 }

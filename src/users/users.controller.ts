@@ -1,4 +1,5 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Request, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { AdminAccessGuard } from 'src/guards/admin-access.guard';
 import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 import { FindOneParams } from 'src/types/classes/find-one-param.dto';
@@ -44,6 +45,16 @@ export class UsersController {
         const user = req.user as IJwtUser
 
         return this.usersService.updateOne(user.sub, userDto)
+    }
+
+    // sometimes
+    @Patch('avatar')
+    @UseGuards(JwtAuthGuard)
+    @UseInterceptors(FileInterceptor('avatar'))
+    uploadAvatar(
+        @UploadedFile() file: Express.Multer.File
+    ) {
+        console.log(file)
     }
 
     @Delete(':id')

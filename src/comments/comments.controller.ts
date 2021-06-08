@@ -6,10 +6,4 @@ export class CommentsController {
     constructor(
         private readonly commentsService: CommentsService
     ) {}
-
-    // test
-    @Get()
-    findAll() {
-        return this.commentsService.findAll()
-    }
 }

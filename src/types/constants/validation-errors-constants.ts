@@ -4,6 +4,7 @@ export const ValidationErrors = {
 	IS_ASCII : 'only-ascii-allowed',
 	IS_EMAIL : 'email-expected',
 	IS_BOOLEAN : 'boolean-expected',
+	IS_ARRAY : 'array_expected',
 	IS_ENUM : 'unallowed-property-value',
 	IS_INT : 'integer-number-required',
 	IS_POSITIVE : 'positive-value-required',
@@ -11,5 +12,6 @@ export const ValidationErrors = {
 	MIN_DATE: 'less-then-current-unix-date',
 	MIN_LENGTH : 'less-then-min-length',
 	MAX_LENGTH : 'more-then-max-length',
-	LENGTH: 'length-is-not-match'
+	LENGTH : 'length-is-not-match',
+	ARRAY_TYPE : 'array-type-is-not-match'
 }
