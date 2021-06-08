@@ -72,6 +72,24 @@ export class UsersService {
         id: string,
         userDto: UpdateUserDto
     ): Promise<User> {
+        if (userDto.login) {
+            const tempUser = await this.usersModel.findOne({
+                login: userDto.login
+            }).exec()
+    
+            if (tempUser) {
+                throw new ConflictException('User with this login already exists')
+            }
+        }
+        if (userDto.email) {
+            const tempUserEmail = await this.usersModel.findOne({
+                email: userDto.email
+            }).exec()
+    
+            if (tempUserEmail) {
+                throw new ConflictException('User with this email already exists')
+            }
+        }
         if (userDto.password) {
             userDto.password = await hash(userDto.password, 10)
         }

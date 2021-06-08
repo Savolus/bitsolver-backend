@@ -1,4 +1,4 @@
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import { ConflictException, forwardRef, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { PostsService } from 'src/posts/posts.service';
@@ -11,7 +11,9 @@ import { UpdateCategoryDto } from 'src/types/classes/categories/update-category.
 export class CategoriesService {
     constructor(
         @InjectModel(Category.name)
-        private readonly categoriesModel: Model<CategoryDocument>
+        private readonly categoriesModel: Model<CategoryDocument>,
+        @Inject(forwardRef(() => PostsService))
+        private readonly postsService: PostsService
     ) {}
 
     findAll(): Promise<Category[]> {
@@ -30,16 +32,16 @@ export class CategoriesService {
         return category
     }
 
-    async findByTitle(
-        title: string
-    ): Promise<Category> {
-        const category = await this.categoriesModel.findOne({ title }).exec()
+    async findByIdPosts(
+        id: string
+    ): Promise<Post[]> {
+        const category = await this.findById(id)
 
-        if (!category) {
-            throw new NotFoundException('Category not found')
-        }
-
-        return category
+        return Promise.all(
+            category.posts.map(
+                (post: any) => this.postsService.findById(post._id)
+            )
+        )
     }
 
     async createOne(
@@ -58,10 +60,20 @@ export class CategoriesService {
         return categoty.save()
     }
 
-    updateOne(
+    async updateOne(
         id: string,
         categoryDto: UpdateCategoryDto
     ): Promise<Category> {
+        if (categoryDto.title) {
+            const tempPost = await this.categoriesModel.findOne({
+                title: categoryDto.title
+            }).exec()
+
+            if (tempPost) {
+                throw new ConflictException('Post with this title already exists')
+            }
+        }
+        
         return this.categoriesModel.findByIdAndUpdate(
             id,
             categoryDto,
@@ -83,5 +95,11 @@ export class CategoriesService {
                 }
             }
         ).exec()
+    }
+
+    deleteOne(
+        id: string
+    ): Promise<Category> {
+        return this.categoriesModel.findByIdAndDelete(id).exec()
     }
 }

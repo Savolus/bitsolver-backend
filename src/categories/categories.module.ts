@@ -3,8 +3,8 @@ import { CategoriesService } from './categories.service';
 import { CategoriesController } from './categories.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Category, CategorySchema } from '../schemes/category.schema';
-import { PostsModule } from 'src/posts/posts.module';
 import { UsersModule } from 'src/users/users.module';
+import { PostsModule } from 'src/posts/posts.module';
 
 @Module({
 	imports: [
@@ -12,7 +12,8 @@ import { UsersModule } from 'src/users/users.module';
 			name: Category.name,
 			schema: CategorySchema
 		}]),
-		UsersModule,
+		forwardRef(() => PostsModule),
+		UsersModule
 	],
 	providers: [
 		CategoriesService
