@@ -6,6 +6,7 @@ import { PostsModule } from './posts/posts.module';
 import { CategoriesModule } from './categories/categories.module';
 import { CommentsModule } from './comments/comments.module';
 import { LikesModule } from './likes/likes.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
 	imports: [
@@ -14,7 +15,8 @@ import { LikesModule } from './likes/likes.module';
 		PostsModule,
 		CategoriesModule,
 		CommentsModule,
-		LikesModule
+		LikesModule,
+		AuthModule
 	],
 	controllers: [ ],
 	providers: [ ],

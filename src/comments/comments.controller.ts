@@ -1,4 +1,15 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
+import { CommentsService } from './comments.service';
 
-@Controller('comments')
-export class CommentsController {}
+@Controller('api/comments')
+export class CommentsController {
+    constructor(
+        private readonly commentsService: CommentsService
+    ) {}
+
+    // test
+    @Get()
+    findAll() {
+        return this.commentsService.findAll()
+    }
+}

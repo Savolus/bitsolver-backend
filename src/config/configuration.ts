@@ -3,7 +3,11 @@ import { config } from 'dotenv'
 
 config()
 
+// App
 export const SERVER_PORT = process.env.SERVER_PORT ?? 3000
+
+// JWT
+export const JWT_SECRET = process.env.JWT_SECRET
 
 // DB configs
 export const MONGO_USER = process.env.MONGO_USER
