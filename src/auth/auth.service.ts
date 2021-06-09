@@ -25,7 +25,7 @@ export class AuthService {
         userDto: LoginUserDto
     ): Promise<AccessTokenDto> {
         // type User
-        const user: any = await this.usersService.findOneByLogin(userDto.login)
+        const user: any = await this.usersService.findByLogin(userDto.login)
     
         if (!(await compare(userDto.password, user.password))) {
             throw new UnauthorizedException('Invalid password given')

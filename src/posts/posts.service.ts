@@ -2,9 +2,12 @@ import { ConflictException, forwardRef, Inject, Injectable, NotFoundException } 
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CategoriesService } from 'src/categories/categories.service';
+import { CommentsService } from 'src/comments/comments.service';
 import { LikesService } from 'src/likes/likes.service';
 import { Category } from 'src/schemes/category.schema';
+import { Comment } from 'src/schemes/comment.schema';
 import { Like } from 'src/schemes/like.schema';
+import { CreateCommentDto } from 'src/types/classes/comments/create-comment.dto';
 import { CreateLikeDto } from 'src/types/classes/likes/create-like.dto';
 import { UsersService } from 'src/users/users.service';
 import { Post, PostDocument } from '../schemes/post.schema';
@@ -19,6 +22,8 @@ export class PostsService {
         private readonly usersService: UsersService,
         @Inject(forwardRef(() => CategoriesService))
         private readonly categoriesService: CategoriesService,
+        @Inject(forwardRef(() => CommentsService))
+        private readonly commentsService: CommentsService,
         private readonly likesService: LikesService,
     ) {}
 
@@ -50,6 +55,14 @@ export class PostsService {
         )
     }
 
+    async findByIdComments(
+        id: string
+    ): Promise<Comment[]> {
+        const post = await this.findById(id)
+
+        return this.commentsService.findAllPostComments(post)
+    }
+
     async findByIdLikes(
         id: string
     ): Promise<Like[]> {
@@ -62,7 +75,7 @@ export class PostsService {
         userId: string,
         postDto: CreatePostDto
     ): Promise<Post> {
-        const user = await this.usersService.findOneById(userId)
+        const user = await this.usersService.findById(userId)
 
         const categories = await Promise.all(
             postDto.categories.map(
@@ -80,7 +93,7 @@ export class PostsService {
 
         await Promise.all(
             categories.map(
-                (category: any) => this.categoriesService.updatePosts(
+                (category: any) => this.categoriesService.updatePostsAddOne(
                     category._id,
                     post
                 )
@@ -90,12 +103,20 @@ export class PostsService {
         return this.postsModel.findById(post._id)
     }
 
+    async createOneComment(
+        userId: string,
+        postId: string,
+        commentDto: CreateCommentDto
+    ): Promise<Comment> {
+        return this.commentsService.createOne(userId, postId, commentDto)
+    }
+
     async createOneLike(
         userId: string,
         postId: string,
         likeDto: CreateLikeDto
     ): Promise<Like> {
-        const user = await this.usersService.findOneById(userId)
+        const user = await this.usersService.findById(userId)
         const post = await this.findById(postId)
 
         return this.likesService.createPostLike(user, post, likeDto.type)
@@ -131,9 +152,32 @@ export class PostsService {
         ).exec()
     }
 
-    deleteOne(
+    async deleteOne(
         id: string
     ): Promise<Post> {
+        const categories = await this.findByIdCategories(id)
+        const comments = await this.findByIdComments(id)
+        const likes = await this.findByIdLikes(id)
+        const post = await this.findById(id)
+
+        await Promise.all(
+            categories.map(
+                (category: any) => this.categoriesService.updatePostsRemoveOne(category._id, post)
+            )
+        )
+
+        await Promise.all(
+            comments.map(
+                (comment: any) => this.commentsService.deleteOne(comment._id)
+            )
+        )
+
+        await Promise.all(
+            likes.map(
+                (like: any) => this.likesService.deleteOne(like._id)
+            )
+        )
+
         return this.postsModel.findByIdAndDelete(id).exec()
     }
 }

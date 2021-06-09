@@ -15,7 +15,7 @@ export class AdminAccessGuard implements CanActivate {
         const jwtUser = request.user as IJwtUser
 
         try {
-            const user = await this.usersService.findOneById(jwtUser.sub)
+            const user = await this.usersService.findById(jwtUser.sub)
 
             return user.role === UserRoleEnum.ADMIN
         } catch {

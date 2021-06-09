@@ -93,7 +93,7 @@ export class LikesService {
         return this.likesModel.findById(like._id)
     }
 
-    async updatePostLike(
+    updatePostLike(
         user: User,
         post: Post,
         type: LikeTypeEnum
@@ -112,7 +112,7 @@ export class LikesService {
         ).exec()
     }
 
-    async deletePostLike(
+    deletePostLike(
         user: User,
         post: Post
     ): Promise<Like> {
@@ -120,5 +120,70 @@ export class LikesService {
             user,
             post
         }).exec()
+    }
+
+    findAllCommentLikes(
+        comment: Comment
+    ): Promise<Like[]> {
+        return this.likesModel.find({ comment }).exec()
+    }
+
+    async createCommentLike(
+        user: User,
+        comment: Comment,
+        type: LikeTypeEnum
+    ): Promise<Like> {
+        const tempLike = await this.likesModel.findOne({
+            user, comment
+        }).exec()
+
+        if (tempLike) {
+            if (tempLike.type === type) {
+                return this.deleteCommentLike(user, comment)
+            }
+            
+            return this.updateCommentLike(user, comment, type)
+        }
+
+        const like = new this.likesModel({ user, comment, type })
+
+        await like.save()
+
+        return this.likesModel.findById(like._id)
+    }
+
+    updateCommentLike(
+        user: User,
+        comment: Comment,
+        type: LikeTypeEnum
+    ): Promise<Like> {
+        return this.likesModel.findOneAndUpdate(
+            {
+                user,
+                comment
+            },
+            {
+                type
+            },
+            {
+                new: true
+            }
+        ).exec()
+    }
+
+    deleteCommentLike(
+        user: User,
+        comment: Comment
+    ): Promise<Like> {
+        return this.likesModel.findOneAndDelete({
+            user,
+            comment
+        }).exec()
+    }
+
+    deleteOne(
+        id: string
+    ): Promise<Like> {
+        return this.likesModel.findByIdAndDelete(id).exec()
     }
 }

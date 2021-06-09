@@ -18,7 +18,7 @@ export class UsersService {
         return this.usersModel.find().exec()
     }
 
-    async findOneById(
+    async findById(
         id: string
     ): Promise<User> {
         const user = await this.usersModel.findById(id).exec()
@@ -30,7 +30,7 @@ export class UsersService {
         return user
     }
 
-    async findOneByLogin(
+    async findByLogin(
         login: string
     ): Promise<User> {
         const user = await this.usersModel.findOne({ login }).exec()

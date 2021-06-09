@@ -83,7 +83,7 @@ export class CategoriesService {
         ).exec()
     }
 
-    updatePosts(
+    updatePostsAddOne(
         id: string,
         post: any
     ): Promise<Category> {
@@ -91,6 +91,20 @@ export class CategoriesService {
             id,
             {
                 $push: {
+                    posts: post._id
+                }
+            }
+        ).exec()
+    }
+
+    updatePostsRemoveOne(
+        id: string,
+        post: any
+    ): Promise<Category> {
+        return this.categoriesModel.findByIdAndUpdate(
+            id,
+            {
+                $pull: {
                     posts: post._id
                 }
             }

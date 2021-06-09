@@ -1,8 +1,10 @@
 import { Controller, Get, Post as PostMethod , Param, Body, UseGuards, Request, Patch, Delete } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 import { Category } from 'src/schemes/category.schema';
+import { Comment } from 'src/schemes/comment.schema';
 import { Like } from 'src/schemes/like.schema';
 import { Post } from 'src/schemes/post.schema';
+import { CreateCommentDto } from 'src/types/classes/comments/create-comment.dto';
 import { FindOneParams } from 'src/types/classes/find-one-param.dto';
 import { CreateLikeDto } from 'src/types/classes/likes/create-like.dto';
 import { CreatePostDto } from 'src/types/classes/posts/create-post.dto';
@@ -35,6 +37,13 @@ export class PostsController {
         return this.postsService.findByIdCategories(params.id)
     }
 
+    @Get(':id/comments')
+    findAllComments(
+        @Param() params: FindOneParams
+    ): Promise<Comment[]> {
+        return this.postsService.findByIdComments(params.id)
+    }
+
     @Get(':id/likes')
     findAllLikes(
         @Param() params: FindOneParams
@@ -51,6 +60,18 @@ export class PostsController {
         const user = req.user as IJwtUser
 
         return this.postsService.createOne(user.sub, postDto)
+    }
+
+    @PostMethod(':id/comments')
+    @UseGuards(JwtAuthGuard)
+    createOneComment(
+        @Request() req,
+        @Param() params: FindOneParams,
+        @Body() commentDto: CreateCommentDto
+    ): Promise<Comment> {
+        const user = req.user as IJwtUser
+
+        return this.postsService.createOneComment(user.sub, params.id, commentDto)
     }
 
     @PostMethod(':id/likes')

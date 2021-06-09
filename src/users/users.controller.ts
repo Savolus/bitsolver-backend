@@ -25,7 +25,7 @@ export class UsersController {
     findOne(
         @Param() params: FindOneParams
     ): Promise<User> {
-        return this.usersService.findOneById(params.id)
+        return this.usersService.findById(params.id)
     }
 
     @Post()
