@@ -1,18 +1,19 @@
-import { ConflictException, forwardRef, Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { CategoriesService } from 'src/categories/categories.service';
-import { CommentsService } from 'src/comments/comments.service';
-import { LikesService } from 'src/likes/likes.service';
-import { Category } from 'src/schemes/category.schema';
-import { Comment } from 'src/schemes/comment.schema';
-import { Like } from 'src/schemes/like.schema';
-import { CreateCommentDto } from 'src/types/classes/comments/create-comment.dto';
-import { CreateLikeDto } from 'src/types/classes/likes/create-like.dto';
-import { UsersService } from 'src/users/users.service';
-import { Post, PostDocument } from '../schemes/post.schema';
+import { ConflictException, forwardRef, Inject, Injectable, NotFoundException } from '@nestjs/common'
+import { InjectModel } from '@nestjs/mongoose'
+import { Model } from 'mongoose'
+
+import { CreateCommentDto } from '../types/classes/comments/create-comment.dto'
+import { CreateLikeDto } from '../types/classes/likes/create-like.dto'
 import { CreatePostDto } from '../types/classes/posts/create-post.dto'
 import { UpdatePostDto } from '../types/classes/posts/update-post.dto'
+import { CategoriesService } from '../categories/categories.service'
+import { CommentsService } from '../comments/comments.service'
+import { Post, PostDocument } from '../schemes/post.schema'
+import { LikesService } from '../likes/likes.service'
+import { UsersService } from '../users/users.service'
+import { Category } from '../schemes/category.schema'
+import { Comment } from '../schemes/comment.schema'
+import { Like } from '../schemes/like.schema'
 
 @Injectable()
 export class PostsService {

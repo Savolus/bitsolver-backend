@@ -9,7 +9,7 @@ import {
     MaxLength
 } from 'class-validator'
 
-import { ValidationErrors } from '../../constants/validation-errors-constants'
+import { ValidationErrors } from '../../constants/validation-errors.constant'
 import { UserRoleEnum } from '../../enums/user-role.enum'
 
 export class CreateUserDto {

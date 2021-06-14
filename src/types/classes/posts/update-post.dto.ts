@@ -1,12 +1,7 @@
-import {
-    IsOptional,
-    IsNotEmpty,
-    IsArray,
-    MaxLength
-} from 'class-validator'
-import { Category } from 'src/schemes/category.schema'
+import { IsOptional, IsNotEmpty, IsArray, MaxLength } from 'class-validator'
 
-import { ValidationErrors } from '../../constants/validation-errors-constants'
+import { ValidationErrors } from '../../constants/validation-errors.constant'
+import { Category } from '../../../schemes/category.schema'
 
 export class UpdatePostDto {
     @IsOptional()

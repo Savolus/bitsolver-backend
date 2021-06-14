@@ -1,11 +1,13 @@
-import { forwardRef, Module } from '@nestjs/common';
-import { CommentsService } from './comments.service';
-import { CommentsController } from './comments.controller';
-import { MongooseModule } from '@nestjs/mongoose';
-import { Comment, CommentSchema } from '../schemes/comment.schema';
-import { PostsModule } from 'src/posts/posts.module';
-import { UsersModule } from 'src/users/users.module';
-import { LikesModule } from 'src/likes/likes.module';
+import { forwardRef, Module } from '@nestjs/common'
+import { MongooseModule } from '@nestjs/mongoose'
+
+import { Comment, CommentSchema } from '../schemes/comment.schema'
+import { CommentsController } from './comments.controller'
+import { CommentsService } from './comments.service'
+import { PostsModule } from '../posts/posts.module'
+import { UsersModule } from '../users/users.module'
+import { LikesModule } from '../likes/likes.module'
+
 
 @Module({
 	imports: [

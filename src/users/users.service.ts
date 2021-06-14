@@ -1,11 +1,12 @@
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common'
+import { InjectModel } from '@nestjs/mongoose'
+import { Model } from 'mongoose'
 import { hash } from 'bcrypt'
-import { CreateUserDto } from '../types/classes/users/create-user.dto';
-import { RegisterUserDto } from '../types/classes/auth/register-user.dto';
-import { User, UserDocument } from '../schemes/user.schema';
-import { UpdateUserDto } from '../types/classes/users/update-user.dto';
+
+import { RegisterUserDto } from '../types/classes/auth/register-user.dto'
+import { CreateUserDto } from '../types/classes/users/create-user.dto'
+import { UpdateUserDto } from '../types/classes/users/update-user.dto'
+import { User, UserDocument } from '../schemes/user.schema'
 
 @Injectable()
 export class UsersService {

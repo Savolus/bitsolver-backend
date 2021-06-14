@@ -1,12 +1,13 @@
-import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
-import { MONGO_OPTIONS, MONGO_URI } from './config/configuration';
-import { UsersModule } from './users/users.module';
-import { PostsModule } from './posts/posts.module';
-import { CategoriesModule } from './categories/categories.module';
-import { CommentsModule } from './comments/comments.module';
-import { LikesModule } from './likes/likes.module';
-import { AuthModule } from './auth/auth.module';
+import { MongooseModule } from '@nestjs/mongoose'
+import { Module } from '@nestjs/common'
+
+import { MONGO_OPTIONS, MONGO_URI } from './config/configuration'
+import { CategoriesModule } from './categories/categories.module'
+import { CommentsModule } from './comments/comments.module'
+import { UsersModule } from './users/users.module'
+import { PostsModule } from './posts/posts.module'
+import { LikesModule } from './likes/likes.module'
+import { AuthModule } from './auth/auth.module'
 
 @Module({
 	imports: [

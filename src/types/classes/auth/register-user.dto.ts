@@ -6,7 +6,7 @@ import {
     MaxLength
 } from 'class-validator'
 
-import { ValidationErrors } from '../../constants/validation-errors-constants'
+import { ValidationErrors } from '../../constants/validation-errors.constant'
 
 export class RegisterUserDto {
     @IsNotEmpty({ message: ValidationErrors.IS_NOT_EMPTY })

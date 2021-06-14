@@ -10,6 +10,7 @@ export const ValidationErrors = {
 	IS_POSITIVE : 'positive-value-required',
 	IS_DATE : 'unix-date-expected',
 	MIN_DATE: 'less-then-current-unix-date',
+	MIN_VALUE : 'less-then-min-value',
 	MIN_LENGTH : 'less-then-min-length',
 	MAX_LENGTH : 'more-then-max-length',
 	LENGTH : 'length-is-not-match',

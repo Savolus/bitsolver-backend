@@ -1,14 +1,15 @@
-import { forwardRef, Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { LikesService } from 'src/likes/likes.service';
-import { PostsService } from 'src/posts/posts.service';
-import { Comment, CommentDocument } from 'src/schemes/comment.schema';
-import { Like } from 'src/schemes/like.schema';
-import { Post } from 'src/schemes/post.schema';
-import { CreateCommentDto } from 'src/types/classes/comments/create-comment.dto';
-import { CreateLikeDto } from 'src/types/classes/likes/create-like.dto';
-import { UsersService } from 'src/users/users.service';
+import { forwardRef, Inject, Injectable, NotFoundException } from '@nestjs/common'
+import { InjectModel } from '@nestjs/mongoose'
+import { Model } from 'mongoose'
+
+import { CreateCommentDto } from '../types/classes/comments/create-comment.dto'
+import { CreateLikeDto } from '../types/classes/likes/create-like.dto'
+import { Comment, CommentDocument } from '../schemes/comment.schema'
+import { LikesService } from '../likes/likes.service'
+import { PostsService } from '../posts/posts.service'
+import { UsersService } from '../users/users.service'
+import { Like } from '../schemes/like.schema'
+import { Post } from '../schemes/post.schema'
 
 @Injectable()
 export class CommentsService {

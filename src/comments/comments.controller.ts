@@ -1,12 +1,22 @@
-import { Body, Controller, Get, Param, Patch, Post, Request, UseGuards } from '@nestjs/common';
-import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
-import { Comment } from 'src/schemes/comment.schema';
-import { Like } from 'src/schemes/like.schema';
-import { CreateCommentDto } from 'src/types/classes/comments/create-comment.dto';
-import { FindOneParams } from 'src/types/classes/find-one-param.dto';
-import { CreateLikeDto } from 'src/types/classes/likes/create-like.dto';
-import { IJwtUser } from 'src/types/interfaces/users/jwt-user.interface';
-import { CommentsService } from './comments.service';
+import {
+    Body,
+    Controller,
+    Get,
+    Param,
+    Patch,
+    Post,
+    Request,
+    UseGuards
+} from '@nestjs/common'
+
+import { CreateCommentDto } from '../types/classes/comments/create-comment.dto'
+import { IJwtUser } from '../types/interfaces/users/jwt-user.interface'
+import { CreateLikeDto } from '../types/classes/likes/create-like.dto'
+import { FindOneParams } from '../types/classes/find-one-param.dto'
+import { JwtAuthGuard } from '../guards/jwt-auth.guard'
+import { CommentsService } from './comments.service'
+import { Comment } from '../schemes/comment.schema'
+import { Like } from '../schemes/like.schema'
 
 @Controller('api/comments')
 export class CommentsController {

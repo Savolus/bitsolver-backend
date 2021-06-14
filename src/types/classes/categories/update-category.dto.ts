@@ -1,10 +1,6 @@
-import {
-    IsOptional,
-    IsNotEmpty,
-    MaxLength
-} from 'class-validator'
+import { IsOptional, IsNotEmpty, MaxLength } from 'class-validator'
 
-import { ValidationErrors } from '../../constants/validation-errors-constants'
+import { ValidationErrors } from '../../constants/validation-errors.constant'
 
 export class UpdateCategoryDto {
     @IsOptional()

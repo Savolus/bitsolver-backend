@@ -1,9 +1,6 @@
-import {
-    IsNotEmpty,
-    MaxLength
-} from 'class-validator'
+import { IsNotEmpty, MaxLength } from 'class-validator'
 
-import { ValidationErrors } from '../../constants/validation-errors-constants'
+import { ValidationErrors } from '../../constants/validation-errors.constant'
 
 export class CreateCategoryDto {
     @IsNotEmpty({ message: ValidationErrors.IS_NOT_EMPTY })

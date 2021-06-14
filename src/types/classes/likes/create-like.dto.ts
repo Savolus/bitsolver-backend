@@ -1,11 +1,7 @@
-import {
-    IsNotEmpty,
-    IsEnum,
-    MaxLength
-} from 'class-validator'
-import { LikeTypeEnum } from 'src/types/enums/like-type.enum'
+import { IsNotEmpty, IsEnum } from 'class-validator'
 
-import { ValidationErrors } from '../../constants/validation-errors-constants'
+import { ValidationErrors } from '../../constants/validation-errors.constant'
+import { LikeTypeEnum } from '../../enums/like-type.enum'
 
 export class CreateLikeDto {
     @IsNotEmpty({ message: ValidationErrors.IS_NOT_EMPTY })

@@ -1,12 +1,23 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post as PostMethod, UseGuards } from '@nestjs/common';
-import { AdminAccessGuard } from 'src/guards/admin-access.guard';
-import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
-import { Category } from 'src/schemes/category.schema';
-import { Post } from 'src/schemes/post.schema';
-import { CreateCategoryDto } from 'src/types/classes/categories/create-category.dto';
-import { UpdateCategoryDto } from 'src/types/classes/categories/update-category.dto';
-import { FindOneParams } from 'src/types/classes/find-one-param.dto';
-import { CategoriesService } from './categories.service';
+import {
+    Body,
+    Controller,
+    Delete,
+    Get,
+    Param,
+    Patch,
+    Post as PostMethod,
+    UseGuards
+} from '@nestjs/common'
+
+import { CreateCategoryDto } from '../types/classes/categories/create-category.dto'
+import { UpdateCategoryDto } from '../types/classes/categories/update-category.dto'
+import { FindOneParams } from '../types/classes/find-one-param.dto'
+import { AdminAccessGuard } from '../guards/admin-access.guard'
+import { CategoriesService } from './categories.service'
+import { JwtAuthGuard } from '../guards/jwt-auth.guard'
+import { Category } from '../schemes/category.schema'
+import { Post } from '../schemes/post.schema'
+
 
 @Controller('api/categories')
 export class CategoriesController {

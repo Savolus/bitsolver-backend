@@ -1,8 +1,8 @@
-import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
-import { IJwtUser } from 'src/types/interfaces/users/jwt-user.interface';
+import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common'
 
-import { UserRoleEnum } from '../types/enums/user-role.enum';
-import { UsersService } from '../users/users.service';
+import { IJwtUser } from '../types/interfaces/users/jwt-user.interface'
+import { UserRoleEnum } from '../types/enums/user-role.enum'
+import { UsersService } from '../users/users.service'
 
 @Injectable()
 export class AdminAccessGuard implements CanActivate {

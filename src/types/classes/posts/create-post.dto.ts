@@ -1,10 +1,6 @@
-import {
-    IsNotEmpty,
-    IsArray,
-    MaxLength
-} from 'class-validator'
+import { IsNotEmpty, IsArray, MaxLength } from 'class-validator'
 
-import { ValidationErrors } from '../../constants/validation-errors-constants'
+import { ValidationErrors } from '../../constants/validation-errors.constant'
 
 export class CreatePostDto {
     @IsNotEmpty({ message: ValidationErrors.IS_NOT_EMPTY })

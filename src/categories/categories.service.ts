@@ -1,11 +1,18 @@
-import { ConflictException, forwardRef, Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { PostsService } from 'src/posts/posts.service';
-import { Category, CategoryDocument } from 'src/schemes/category.schema';
-import { Post } from 'src/schemes/post.schema';
-import { CreateCategoryDto } from 'src/types/classes/categories/create-category.dto';
-import { UpdateCategoryDto } from 'src/types/classes/categories/update-category.dto';
+import {
+    ConflictException,
+    forwardRef,
+    Inject,
+    Injectable,
+    NotFoundException
+} from '@nestjs/common'
+import { InjectModel } from '@nestjs/mongoose'
+import { Model } from 'mongoose'
+
+import { CreateCategoryDto } from '../types/classes/categories/create-category.dto'
+import { UpdateCategoryDto } from '../types/classes/categories/update-category.dto'
+import { Category, CategoryDocument } from '../schemes/category.schema'
+import { PostsService } from '../posts/posts.service'
+import { Post } from '../schemes/post.schema'
 
 @Injectable()
 export class CategoriesService {

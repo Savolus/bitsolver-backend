@@ -1,11 +1,12 @@
-import { ConflictException, Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { Comment } from 'src/schemes/comment.schema';
-import { Like, LikeDocument } from 'src/schemes/like.schema';
-import { Post } from 'src/schemes/post.schema';
-import { User } from 'src/schemes/user.schema';
-import { LikeTypeEnum } from 'src/types/enums/like-type.enum';
+import { InjectModel } from '@nestjs/mongoose'
+import { Injectable } from '@nestjs/common'
+import { Model } from 'mongoose'
+
+import { LikeTypeEnum } from '../types/enums/like-type.enum'
+import { Like, LikeDocument } from '../schemes/like.schema'
+import { Comment } from '../schemes/comment.schema'
+import { Post } from '../schemes/post.schema'
+import { User } from '../schemes/user.schema'
 
 @Injectable()
 export class LikesService {

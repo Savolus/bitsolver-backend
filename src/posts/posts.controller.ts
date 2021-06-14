@@ -1,16 +1,27 @@
-import { Controller, Get, Post as PostMethod , Param, Body, UseGuards, Request, Patch, Delete } from '@nestjs/common';
-import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
-import { Category } from 'src/schemes/category.schema';
-import { Comment } from 'src/schemes/comment.schema';
-import { Like } from 'src/schemes/like.schema';
-import { Post } from 'src/schemes/post.schema';
-import { CreateCommentDto } from 'src/types/classes/comments/create-comment.dto';
-import { FindOneParams } from 'src/types/classes/find-one-param.dto';
-import { CreateLikeDto } from 'src/types/classes/likes/create-like.dto';
-import { CreatePostDto } from 'src/types/classes/posts/create-post.dto';
-import { UpdatePostDto } from 'src/types/classes/posts/update-post.dto';
-import { IJwtUser } from 'src/types/interfaces/users/jwt-user.interface';
-import { PostsService } from './posts.service';
+import {
+    Controller,
+    Get,
+    Post as PostMethod,
+    Param,
+    Body,
+    UseGuards,
+    Request,
+    Patch,
+    Delete
+} from '@nestjs/common'
+
+import { CreateCommentDto } from '../types/classes/comments/create-comment.dto'
+import { IJwtUser } from '../types/interfaces/users/jwt-user.interface'
+import { CreateLikeDto } from '../types/classes/likes/create-like.dto'
+import { CreatePostDto } from '../types/classes/posts/create-post.dto'
+import { UpdatePostDto } from '../types/classes/posts/update-post.dto'
+import { FindOneParams } from '../types/classes/find-one-param.dto'
+import { JwtAuthGuard } from '../guards/jwt-auth.guard'
+import { Category } from '../schemes/category.schema'
+import { Comment } from '../schemes/comment.schema'
+import { Like } from '../schemes/like.schema'
+import { Post } from '../schemes/post.schema'
+import { PostsService } from './posts.service'
 
 @Controller('api/posts')
 export class PostsController {

@@ -1,11 +1,12 @@
-import { ValidationError, ValidationPipe } from '@nestjs/common';
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
-import { SERVER_PORT } from './config/configuration';
-import { ValidationExceptionClass } from './filters/validation.exception';
+import { ValidationError, ValidationPipe } from '@nestjs/common'
+import { NestFactory } from '@nestjs/core'
+
+import { ValidationExceptionClass } from './filters/validation.exception'
+import { SERVER_PORT } from './config/configuration'
+import { AppModule } from './app.module'
 
 async function bootstrap() {
-	const app = await NestFactory.create(AppModule);
+	const app = await NestFactory.create(AppModule)
 
 	app.useGlobalPipes(
 		new ValidationPipe({
@@ -22,7 +23,7 @@ async function bootstrap() {
 		})
 	)
 
-	await app.listen(SERVER_PORT);
+	await app.listen(SERVER_PORT)
 }
 
-bootstrap();
+bootstrap()

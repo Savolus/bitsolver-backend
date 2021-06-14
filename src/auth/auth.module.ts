@@ -16,7 +16,7 @@ import { JWT_SECRET } from '../config/configuration';
 		JwtModule.register({
 			secret: JWT_SECRET
 		}),
-		forwardRef(() => UsersModule)
+		UsersModule
 	],
 	providers: [
 		AuthService,
