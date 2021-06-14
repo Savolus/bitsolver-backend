@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
 
 import { CreateCommentDto } from '../types/classes/comments/create-comment.dto'
+import { PaginationQuery } from '../types/classes/pagination-query.dto'
 import { CreateLikeDto } from '../types/classes/likes/create-like.dto'
 import { CreatePostDto } from '../types/classes/posts/create-post.dto'
 import { UpdatePostDto } from '../types/classes/posts/update-post.dto'
@@ -28,7 +29,15 @@ export class PostsService {
         private readonly likesService: LikesService,
     ) {}
 
-    findAll(): Promise<Post[]> {
+    findAll(
+        query: PaginationQuery
+    ): Promise<Post[]> {
+        if (query.page) {
+            const toSkip = (query.page - 1) * query.size
+
+            return this.postsModel.find().skip(toSkip).limit(query.size).exec()
+        }
+
         return this.postsModel.find().exec()
     }
 

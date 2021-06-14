@@ -4,6 +4,7 @@ import { Model } from 'mongoose'
 import { hash } from 'bcrypt'
 
 import { RegisterUserDto } from '../types/classes/auth/register-user.dto'
+import { PaginationQuery } from '../types/classes/pagination-query.dto'
 import { CreateUserDto } from '../types/classes/users/create-user.dto'
 import { UpdateUserDto } from '../types/classes/users/update-user.dto'
 import { User, UserDocument } from '../schemes/user.schema'
@@ -15,7 +16,15 @@ export class UsersService {
         private readonly usersModel: Model<UserDocument>
     ) {}
 
-    findAll(): Promise<User[]> {
+    findAll(
+        query: PaginationQuery
+    ): Promise<User[]> {
+        if (query.page) {
+            const toSkip = (query.page - 1) * query.size
+
+            return this.usersModel.find().skip(toSkip).limit(query.size).exec()
+        }
+
         return this.usersModel.find().exec()
     }
 

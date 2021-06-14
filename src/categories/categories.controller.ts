@@ -6,11 +6,13 @@ import {
     Param,
     Patch,
     Post as PostMethod,
+    Query,
     UseGuards
 } from '@nestjs/common'
 
 import { CreateCategoryDto } from '../types/classes/categories/create-category.dto'
 import { UpdateCategoryDto } from '../types/classes/categories/update-category.dto'
+import { PaginationQuery } from '../types/classes/pagination-query.dto'
 import { FindOneParams } from '../types/classes/find-one-param.dto'
 import { AdminAccessGuard } from '../guards/admin-access.guard'
 import { CategoriesService } from './categories.service'
@@ -26,8 +28,10 @@ export class CategoriesController {
     ) {}
 
     @Get()
-    findAll(): Promise<Category[]> {
-        return this.categoriesService.findAll()
+    findAll(
+        @Query() query: PaginationQuery
+    ): Promise<Category[]> {
+        return this.categoriesService.findAll(query)
     }
 
     @Get(':id')

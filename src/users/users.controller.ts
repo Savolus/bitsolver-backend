@@ -15,6 +15,7 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express'
 
 import { IJwtUser } from '../types/interfaces/users/jwt-user.interface'
+import { PaginationQuery } from '../types/classes/pagination-query.dto'
 import { CreateUserDto } from '../types/classes/users/create-user.dto'
 import { UpdateUserDto } from '../types/classes/users/update-user.dto'
 import { FindOneParams } from '../types/classes/find-one-param.dto'
@@ -22,7 +23,6 @@ import { AdminAccessGuard } from '../guards/admin-access.guard'
 import { JwtAuthGuard } from '../guards/jwt-auth.guard'
 import { UsersService } from './users.service'
 import { User } from '../schemes/user.schema'
-import { PaginationQuery } from 'src/types/classes/pagination-query.dto'
 
 @Controller('api/users')
 export class UsersController {
@@ -34,7 +34,7 @@ export class UsersController {
     findAll(
         @Query() query: PaginationQuery
     ): Promise<User[]> {
-        return this.usersService.findAll()
+        return this.usersService.findAll(query)
     }
 
     @Get(':id')

@@ -10,6 +10,7 @@ import { Model } from 'mongoose'
 
 import { CreateCategoryDto } from '../types/classes/categories/create-category.dto'
 import { UpdateCategoryDto } from '../types/classes/categories/update-category.dto'
+import { PaginationQuery } from '../types/classes/pagination-query.dto'
 import { Category, CategoryDocument } from '../schemes/category.schema'
 import { PostsService } from '../posts/posts.service'
 import { Post } from '../schemes/post.schema'
@@ -23,7 +24,15 @@ export class CategoriesService {
         private readonly postsService: PostsService
     ) {}
 
-    findAll(): Promise<Category[]> {
+    findAll(
+        query: PaginationQuery
+    ): Promise<Category[]> {
+        if (query.page) {
+            const toSkip = (query.page - 1) * query.size
+
+            return this.categoriesModel.find().skip(toSkip).limit(query.size).exec()
+        }
+
         return this.categoriesModel.find().exec()
     }
 

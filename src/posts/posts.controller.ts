@@ -7,11 +7,13 @@ import {
     UseGuards,
     Request,
     Patch,
-    Delete
+    Delete,
+    Query
 } from '@nestjs/common'
 
 import { CreateCommentDto } from '../types/classes/comments/create-comment.dto'
 import { IJwtUser } from '../types/interfaces/users/jwt-user.interface'
+import { PaginationQuery } from '../types/classes/pagination-query.dto'
 import { CreateLikeDto } from '../types/classes/likes/create-like.dto'
 import { CreatePostDto } from '../types/classes/posts/create-post.dto'
 import { UpdatePostDto } from '../types/classes/posts/update-post.dto'
@@ -30,8 +32,10 @@ export class PostsController {
     ) {}
 
     @Get()
-    findAll(): Promise<Post[]> {
-        return this.postsService.findAll()
+    findAll(
+        @Query() query: PaginationQuery
+    ): Promise<Post[]> {
+        return this.postsService.findAll(query)
     }
 
     @Get(':id')
