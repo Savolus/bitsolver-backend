@@ -20,9 +20,9 @@ export class UsersService {
         query: PaginationQuery
     ): Promise<User[]> {
         if (query.page) {
-            const toSkip = (query.page - 1) * query.size
+            const toSkip = (query.page - 1) * +query.size
 
-            return this.usersModel.find().skip(toSkip).limit(query.size).exec()
+            return this.usersModel.find().skip(toSkip).limit(+query.size).exec()
         }
 
         return this.usersModel.find().exec()

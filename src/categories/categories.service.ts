@@ -28,9 +28,9 @@ export class CategoriesService {
         query: PaginationQuery
     ): Promise<Category[]> {
         if (query.page) {
-            const toSkip = (query.page - 1) * query.size
+            const toSkip = (query.page - 1) * +query.size
 
-            return this.categoriesModel.find().skip(toSkip).limit(query.size).exec()
+            return this.categoriesModel.find().skip(toSkip).limit(+query.size).exec()
         }
 
         return this.categoriesModel.find().exec()

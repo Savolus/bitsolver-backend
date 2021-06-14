@@ -33,9 +33,9 @@ export class PostsService {
         query: PaginationQuery
     ): Promise<Post[]> {
         if (query.page) {
-            const toSkip = (query.page - 1) * query.size
+            const toSkip = (query.page - 1) * +query.size
 
-            return this.postsModel.find().skip(toSkip).limit(query.size).exec()
+            return this.postsModel.find().skip(toSkip).limit(+query.size).exec()
         }
 
         return this.postsModel.find().exec()
