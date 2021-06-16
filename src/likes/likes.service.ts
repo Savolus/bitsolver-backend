@@ -72,9 +72,14 @@ export class LikesService {
         }, 0)
     }
 
-    findAllPostLikes(
-        post: Post
+    async findAllPostLikes(
+        post: Post,
+        user: User
     ): Promise<Like[]> {
+        if (user) {
+            return this.likesModel.find({ post, user }).exec()
+        }
+        
         return this.likesModel.find({ post }).exec()
     }
 

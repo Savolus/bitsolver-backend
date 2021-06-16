@@ -25,6 +25,7 @@ import { Comment } from '../schemes/comment.schema'
 import { Like } from '../schemes/like.schema'
 import { Post } from '../schemes/post.schema'
 import { PostsService } from './posts.service'
+import { UserQuery } from 'src/types/classes/users/user-query.dto'
 
 @Controller('api/posts')
 export class PostsController {
@@ -62,9 +63,10 @@ export class PostsController {
 
     @Get(':id/likes')
     findAllLikes(
-        @Param() params: FindOneParams
+        @Param() params: FindOneParams,
+        @Query() query: UserQuery
     ): Promise<Like[]> {
-        return this.postsService.findByIdLikes(params.id)
+        return this.postsService.findByIdLikes(params.id, query.user)
     }
 
     @PostMethod()
