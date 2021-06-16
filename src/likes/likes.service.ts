@@ -73,14 +73,16 @@ export class LikesService {
     }
 
     async findAllPostLikes(
+        post: Post
+    ): Promise<Like[]> {
+        return this.likesModel.find({ post }).exec()
+    }
+
+    async findPostLike(
         post: Post,
         user: User
-    ): Promise<Like[]> {
-        if (user) {
-            return this.likesModel.find({ post, user }).exec()
-        }
-        
-        return this.likesModel.find({ post }).exec()
+    ): Promise<Like> {
+        return this.likesModel.findOne({ post, user }).exec()
     }
 
     async createPostLike(

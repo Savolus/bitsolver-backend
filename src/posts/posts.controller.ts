@@ -63,10 +63,16 @@ export class PostsController {
 
     @Get(':id/likes')
     findAllLikes(
-        @Param() params: FindOneParams,
-        @Query() query: UserQuery
+        @Param() params: FindOneParams
     ): Promise<Like[]> {
-        return this.postsService.findByIdLikes(params.id, query.user)
+        return this.postsService.findByIdLikes(params.id)
+    }
+
+    @Get(':id/likes/:userId')
+    findLike(
+        @Param() params: FindOneParams
+    ): Promise<Like> {
+        return this.postsService.findByIdLike(params.id, params.userId)
     }
 
     @PostMethod()

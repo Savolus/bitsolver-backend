@@ -119,17 +119,21 @@ export class PostsService {
     }
 
     async findByIdLikes(
-        id: string,
-        userId: string
+        id: string
     ): Promise<Like[]> {
         const post = await this.findById(id)
-        let user = null
 
-        if (userId) {
-            user = await this.usersService.findById(userId)
-        }
+        return this.likesService.findAllPostLikes(post)
+    }
 
-        return this.likesService.findAllPostLikes(post, user)
+    async findByIdLike(
+        id: string,
+        userId: string
+    ): Promise<Like> {
+        const post = await this.findById(id)
+        const user = await this.usersService.findById(userId)
+
+        return this.likesService.findPostLike(post, user)
     }
 
     async createOne(
@@ -218,7 +222,7 @@ export class PostsService {
     ): Promise<Post> {
         const categories = await this.findByIdCategories(id)
         const comments = await this.findByIdComments(id)
-        const likes = await this.findByIdLikes(id, null)
+        const likes = await this.findByIdLikes(id)
         const post = await this.findById(id)
 
         await Promise.all(
