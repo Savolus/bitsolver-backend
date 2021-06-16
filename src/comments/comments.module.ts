@@ -16,8 +16,8 @@ import { LikesModule } from '../likes/likes.module'
 			schema: CommentSchema
 		}]),
 		forwardRef(() => PostsModule),
-		UsersModule,
-		LikesModule
+		forwardRef(() => LikesModule),
+		forwardRef(() => UsersModule)
 	],
 	providers: [ CommentsService ],
 	controllers: [ CommentsController ],

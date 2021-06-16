@@ -1,7 +1,9 @@
 import { MongooseModule } from '@nestjs/mongoose'
-import { Module } from '@nestjs/common'
+import { forwardRef, Module } from '@nestjs/common'
 
+import { CommentsModule } from '../comments/comments.module'
 import { Like, LikeSchema } from '../schemes/like.schema'
+import { PostsModule } from '../posts/posts.module'
 import { LikesService } from './likes.service'
 
 @Module({
@@ -9,7 +11,9 @@ import { LikesService } from './likes.service'
 		MongooseModule.forFeature([{
 			name: Like.name,
 			schema: LikeSchema
-		}])
+		}]),
+		forwardRef(() => PostsModule),
+		forwardRef(() => CommentsModule)
 	],
 	providers: [ LikesService ],
 	exports: [ LikesService ]

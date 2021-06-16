@@ -17,8 +17,8 @@ import { PostsService } from './posts.service'
 		}]),
 		forwardRef(() => CategoriesModule),
 		forwardRef(() => CommentsModule),
-		UsersModule,
-		LikesModule
+		forwardRef(() => LikesModule),
+		forwardRef(() => UsersModule)
 	],
 	providers: [ PostsService ],
 	controllers: [ PostsController ],

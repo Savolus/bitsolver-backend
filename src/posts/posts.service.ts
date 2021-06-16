@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
 
 import { CreateCommentDto } from '../types/classes/comments/create-comment.dto'
+import { ResponsePostDto } from '../types/classes/posts/response-post.dto'
 import { PaginationQuery } from '../types/classes/pagination-query.dto'
 import { CreateLikeDto } from '../types/classes/likes/create-like.dto'
 import { CreatePostDto } from '../types/classes/posts/create-post.dto'
@@ -15,30 +16,74 @@ import { UsersService } from '../users/users.service'
 import { Category } from '../schemes/category.schema'
 import { Comment } from '../schemes/comment.schema'
 import { Like } from '../schemes/like.schema'
+import { User } from '../schemes/user.schema'
 
 @Injectable()
 export class PostsService {
     constructor(
         @InjectModel(Post.name)
         private readonly postsModel: Model<PostDocument>,
-        private readonly usersService: UsersService,
         @Inject(forwardRef(() => CategoriesService))
         private readonly categoriesService: CategoriesService,
         @Inject(forwardRef(() => CommentsService))
         private readonly commentsService: CommentsService,
+        @Inject(forwardRef(() => LikesService))
         private readonly likesService: LikesService,
+        @Inject(forwardRef(() => UsersService))
+        private readonly usersService: UsersService,
     ) {}
 
-    findAll(
+    async findAll(
         query: PaginationQuery
-    ): Promise<Post[]> {
+    ): Promise<ResponsePostDto[]> {
+        let posts: Post[] = []
+
         if (query.page) {
             const toSkip = (query.page - 1) * +query.size
 
-            return this.postsModel.find().skip(toSkip).limit(+query.size).exec()
+            posts = await this.postsModel.find().skip(toSkip).limit(+query.size).exec()
+        } else {
+            posts = await this.postsModel.find().exec()
         }
 
-        return this.postsModel.find().exec()
+        const postsRatings = await Promise.all(
+            posts.map(post => this.likesService.getPostRating(post))
+        )
+
+        return posts.map((post: any, index) => {
+            const postDto = post._doc
+
+            delete postDto.__v
+            postDto.publish_date = post._id.getTimestamp()
+            postDto.rating = postsRatings[index]
+
+            return postDto
+        }, [])
+    }
+
+    findAllByUser(
+        user: User
+    ): Promise<Post[]> {
+        return this.postsModel.find({ user }).exec()
+    }
+
+    async findOne(
+        id: string
+    ): Promise<ResponsePostDto> {
+        const post: any = await this.postsModel.findById(id).exec()
+
+        if (!post) {
+            throw new NotFoundException('Post not found')
+        }
+
+        const postDto = post._doc
+
+        delete postDto.__v
+
+        postDto.publish_date = post._id.getTimestamp()
+        postDto.rating = await this.likesService.getPostRating(post)
+
+        return postDto
     }
 
     async findById(

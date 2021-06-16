@@ -8,6 +8,7 @@ import {
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
 
+import { ResponseCategoryDto } from '../types/classes/categories/response-category.dto'
 import { CreateCategoryDto } from '../types/classes/categories/create-category.dto'
 import { UpdateCategoryDto } from '../types/classes/categories/update-category.dto'
 import { PaginationQuery } from '../types/classes/pagination-query.dto'
@@ -24,16 +25,42 @@ export class CategoriesService {
         private readonly postsService: PostsService
     ) {}
 
-    findAll(
+    async findAll(
         query: PaginationQuery
-    ): Promise<Category[]> {
+    ): Promise<ResponseCategoryDto[]> {
+        let categories: Category[] = []
+
         if (query.page) {
             const toSkip = (query.page - 1) * +query.size
 
-            return this.categoriesModel.find().skip(toSkip).limit(+query.size).exec()
+            categories = await this.categoriesModel.find().skip(toSkip).limit(+query.size).exec()
+        } else {
+            categories = await this.categoriesModel.find().exec()
         }
 
-        return this.categoriesModel.find().exec()
+        return categories.map((category: any) => {
+            const categoryDto = category._doc
+
+            delete categoryDto.__v
+
+            return categoryDto
+        })
+    }
+
+    async findOne(
+        id: string
+    ): Promise<ResponseCategoryDto> {
+        const category:any = await this.categoriesModel.findById(id).exec()
+
+        if (!category) {
+            throw new NotFoundException('Category not found')
+        }
+
+        const categoryDto = category._doc
+
+        delete categoryDto.__v
+
+        return categoryDto
     }
 
     async findById(

@@ -16,9 +16,7 @@ import { PostsModule } from '../posts/posts.module'
 		forwardRef(() => PostsModule),
 		UsersModule
 	],
-	providers: [
-		CategoriesService
-	],
+	providers: [ CategoriesService ],
 	controllers: [ CategoriesController ],
 	exports: [ CategoriesService ]
 })

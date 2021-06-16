@@ -14,6 +14,7 @@ import {
 } from '@nestjs/common'
 import { FileInterceptor } from '@nestjs/platform-express'
 
+import { ResponseUserDto } from '../types/classes/users/response-user.dto'
 import { IJwtUser } from '../types/interfaces/users/jwt-user.interface'
 import { PaginationQuery } from '../types/classes/pagination-query.dto'
 import { CreateUserDto } from '../types/classes/users/create-user.dto'
@@ -33,15 +34,15 @@ export class UsersController {
     @Get()
     findAll(
         @Query() query: PaginationQuery
-    ): Promise<User[]> {
+    ): Promise<ResponseUserDto[]> {
         return this.usersService.findAll(query)
     }
 
     @Get(':id')
     findOne(
         @Param() params: FindOneParams
-    ): Promise<User> {
-        return this.usersService.findById(params.id)
+    ): Promise<ResponseUserDto> {
+        return this.usersService.findOne(params.id)
     }
 
     @Post()

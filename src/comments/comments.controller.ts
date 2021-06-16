@@ -9,6 +9,7 @@ import {
     UseGuards
 } from '@nestjs/common'
 
+import { ResponseCommentDto } from '../types/classes/comments/response-comment.dto'
 import { CreateCommentDto } from '../types/classes/comments/create-comment.dto'
 import { IJwtUser } from '../types/interfaces/users/jwt-user.interface'
 import { CreateLikeDto } from '../types/classes/likes/create-like.dto'
@@ -27,8 +28,8 @@ export class CommentsController {
     @Get(':id')
     findOne(
         @Param() params: FindOneParams
-    ): Promise<Comment> {
-        return this.commentsService.findById(params.id)
+    ): Promise<ResponseCommentDto> {
+        return this.commentsService.findOne(params.id)
     }
 
     @Get(':id/likes')

@@ -2,6 +2,7 @@ import { forwardRef, Inject, Injectable, NotFoundException } from '@nestjs/commo
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
 
+import { ResponseCommentDto } from '../types/classes/comments/response-comment.dto'
 import { CreateCommentDto } from '../types/classes/comments/create-comment.dto'
 import { CreateLikeDto } from '../types/classes/likes/create-like.dto'
 import { Comment, CommentDocument } from '../schemes/comment.schema'
@@ -10,6 +11,7 @@ import { PostsService } from '../posts/posts.service'
 import { UsersService } from '../users/users.service'
 import { Like } from '../schemes/like.schema'
 import { Post } from '../schemes/post.schema'
+import { User } from '../schemes/user.schema'
 
 @Injectable()
 export class CommentsService {
@@ -18,14 +20,41 @@ export class CommentsService {
         private readonly commentsModel: Model<CommentDocument>,
         @Inject(forwardRef(() => PostsService))
         private readonly postsService: PostsService,
-        private readonly usersService: UsersService,
-        private readonly likesService: LikesService
+        @Inject(forwardRef(() => LikesService))
+        private readonly likesService: LikesService,
+        @Inject(forwardRef(() => UsersService))
+        private readonly usersService: UsersService
     ) {}
+
+    findAllByUser(
+        user: User
+    ): Promise<Comment[]> {
+        return this.commentsModel.find({ user }).exec()
+    }
 
     findAllPostComments(
         post: Post
     ): Promise<Comment[]> {
         return this.commentsModel.find({ post }).exec()
+    }
+
+    async findOne(
+        id: string
+    ): Promise<ResponseCommentDto> {
+        const comment: any = await this.commentsModel.findById(id).exec()
+
+        if (!comment) {
+            throw new NotFoundException('Comment not found')
+        }
+
+        const commentDto = comment._doc
+
+        delete commentDto.__v
+
+        commentDto.publish_date = comment._id.getTimestamp()
+        commentDto.rating = await this.likesService.getCommentRating(comment)
+
+        return comment
     }
 
     async findById(

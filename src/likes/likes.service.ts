@@ -1,9 +1,11 @@
 import { InjectModel } from '@nestjs/mongoose'
-import { Injectable } from '@nestjs/common'
+import { forwardRef, Inject, Injectable } from '@nestjs/common'
 import { Model } from 'mongoose'
 
+import { CommentsService } from '../comments/comments.service'
 import { LikeTypeEnum } from '../types/enums/like-type.enum'
 import { Like, LikeDocument } from '../schemes/like.schema'
+import { PostsService } from '../posts/posts.service'
 import { Comment } from '../schemes/comment.schema'
 import { Post } from '../schemes/post.schema'
 import { User } from '../schemes/user.schema'
@@ -12,13 +14,19 @@ import { User } from '../schemes/user.schema'
 export class LikesService {
     constructor(
         @InjectModel(Like.name)
-        private readonly likesModel: Model<LikeDocument>
+        private readonly likesModel: Model<LikeDocument>,
+        @Inject(forwardRef(() => PostsService))
+        private readonly postsService: PostsService,
+        @Inject(forwardRef(() => CommentsService))
+        private readonly commentsService: CommentsService,
     ) {}
 
     async getUserRating(
-        posts: Post[],
-        comments: Comment[]
+        user: User
     ): Promise<number> {
+        const posts = await this.postsService.findAllByUser(user)
+        const comments = await this.commentsService.findAllByUser(user)
+
         const postsRating = await Promise.all(
             posts.map(
                 post => this.getPostRating(post)

@@ -12,6 +12,7 @@ import {
 } from '@nestjs/common'
 
 import { CreateCommentDto } from '../types/classes/comments/create-comment.dto'
+import { ResponsePostDto } from '../types/classes/posts/response-post.dto'
 import { IJwtUser } from '../types/interfaces/users/jwt-user.interface'
 import { PaginationQuery } from '../types/classes/pagination-query.dto'
 import { CreateLikeDto } from '../types/classes/likes/create-like.dto'
@@ -34,15 +35,15 @@ export class PostsController {
     @Get()
     findAll(
         @Query() query: PaginationQuery
-    ): Promise<Post[]> {
+    ): Promise<ResponsePostDto[]> {
         return this.postsService.findAll(query)
     }
 
     @Get(':id')
     findOne(
         @Param() params: FindOneParams
-    ): Promise<Post> {
-        return this.postsService.findById(params.id)
+    ): Promise<ResponsePostDto> {
+        return this.postsService.findOne(params.id)
     }
 
     @Get(':id/categories')

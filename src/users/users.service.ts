@@ -1,31 +1,66 @@
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common'
+import { ConflictException, forwardRef, Inject, Injectable, NotFoundException } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
 import { hash } from 'bcrypt'
 
+import { ResponseUserDto } from '../types/classes/users/response-user.dto'
 import { RegisterUserDto } from '../types/classes/auth/register-user.dto'
 import { PaginationQuery } from '../types/classes/pagination-query.dto'
 import { CreateUserDto } from '../types/classes/users/create-user.dto'
 import { UpdateUserDto } from '../types/classes/users/update-user.dto'
 import { User, UserDocument } from '../schemes/user.schema'
+import { LikesService } from '../likes/likes.service'
 
 @Injectable()
 export class UsersService {
     constructor(
         @InjectModel(User.name)
-        private readonly usersModel: Model<UserDocument>
+        private readonly usersModel: Model<UserDocument>,
+        @Inject(forwardRef(() => LikesService))
+        private readonly likesService: LikesService
     ) {}
 
-    findAll(
+    async findAll(
         query: PaginationQuery
-    ): Promise<User[]> {
+    ): Promise<ResponseUserDto[]> {
+        let users: User[] = []
+
         if (query.page) {
             const toSkip = (query.page - 1) * +query.size
 
-            return this.usersModel.find().skip(toSkip).limit(+query.size).exec()
+            users = await this.usersModel.find({}, '_id login full_name')
+                .skip(toSkip).limit(+query.size).exec()
+        } else {
+            users = await this.usersModel.find({}, '_id login full_name').exec()
         }
 
-        return this.usersModel.find().exec()
+        const usersRatings = await Promise.all(
+            users.map(user => this.likesService.getUserRating(user))
+        )
+
+        return users.map((user: any, index) => {
+            const userDto = user._doc
+
+            userDto.rating = usersRatings[index]
+
+            return userDto
+        }, [])
+    }
+
+    async findOne(
+        id: string
+    ): Promise<ResponseUserDto> {
+        const user: any = await this.usersModel.findById(id, '_id login full_name').exec()
+
+        if (!user) {
+            throw new NotFoundException('User not found')
+        }
+
+        const userDto = user._doc
+
+        userDto.rating = await this.likesService.getUserRating(user)
+
+        return userDto
     }
 
     async findById(

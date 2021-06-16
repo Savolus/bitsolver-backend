@@ -10,6 +10,7 @@ import {
     UseGuards
 } from '@nestjs/common'
 
+import { ResponseCategoryDto } from '../types/classes/categories/response-category.dto'
 import { CreateCategoryDto } from '../types/classes/categories/create-category.dto'
 import { UpdateCategoryDto } from '../types/classes/categories/update-category.dto'
 import { PaginationQuery } from '../types/classes/pagination-query.dto'
@@ -30,15 +31,15 @@ export class CategoriesController {
     @Get()
     findAll(
         @Query() query: PaginationQuery
-    ): Promise<Category[]> {
+    ): Promise<ResponseCategoryDto[]> {
         return this.categoriesService.findAll(query)
     }
 
     @Get(':id')
     findOne(
         @Param() params: FindOneParams
-    ): Promise<Category> {
-        return this.categoriesService.findById(params.id)
+    ): Promise<ResponseCategoryDto> {
+        return this.categoriesService.findOne(params.id)
     }
 
     @Get(':id/posts')
