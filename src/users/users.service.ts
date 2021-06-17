@@ -29,10 +29,10 @@ export class UsersService {
         if (+query.page) {
             const toSkip = (+query.page - 1) * +query.size
 
-            users = await this.usersModel.find({}, '_id login full_name')
+            users = await this.usersModel.find({}, '_id login full_name email')
                 .skip(toSkip).limit(+query.size).exec()
         } else {
-            users = await this.usersModel.find({}, '_id login full_name').exec()
+            users = await this.usersModel.find({}, '_id login full_name email').exec()
         }
 
         const usersRatings = await Promise.all(
@@ -60,7 +60,7 @@ export class UsersService {
     async findOne(
         id: string
     ): Promise<ResponseUserDto> {
-        const user: any = await this.usersModel.findById(id, '_id login full_name').exec()
+        const user: any = await this.usersModel.findById(id, '_id login full_name email').exec()
 
         if (!user) {
             throw new NotFoundException('User not found')
