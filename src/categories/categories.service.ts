@@ -58,6 +58,16 @@ export class CategoriesService {
         return { pages }
     }
 
+    async countPostPages(
+        id: string,
+        query: PaginationQuery
+    ): Promise<ResponseCountPagesDto> {
+        const category = await this.findById(id)
+        const pages = Math.ceil(category.posts.length / +query.size)
+
+        return { pages }
+    }
+
     async findOne(
         id: string
     ): Promise<ResponseCategoryDto> {

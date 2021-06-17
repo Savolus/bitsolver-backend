@@ -59,6 +59,14 @@ export class CategoriesController {
         return this.categoriesService.findByIdPosts(params.id, query)
     }
 
+    @Get(':id/posts/pages')
+    countPostPages(
+        @Query() query: PaginationQuery,
+        @Param() params: FindOneParams
+    ): Promise<ResponseCountPagesDto> {
+        return this.categoriesService.countPostPages(params.id, query)
+    }
+
     @PostMethod()
     @UseGuards(JwtAuthGuard, AdminAccessGuard)
     createOne(
