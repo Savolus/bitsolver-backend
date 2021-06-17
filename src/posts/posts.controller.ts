@@ -26,6 +26,9 @@ import { Like } from '../schemes/like.schema'
 import { Post } from '../schemes/post.schema'
 import { PostsService } from './posts.service'
 import { UserQuery } from 'src/types/classes/users/user-query.dto'
+import { ResponseCommentDto } from 'src/types/classes/comments/response-comment.dto'
+import { ResponseCategoryDto } from 'src/types/classes/categories/response-category.dto'
+import { ResponseCountPagesDto } from 'src/types/classes/response-count-pages.dto'
 
 @Controller('api/posts')
 export class PostsController {
@@ -40,6 +43,13 @@ export class PostsController {
         return this.postsService.findAll(query)
     }
 
+    @Get('/pages')
+    countPages(
+        @Query() query: PaginationQuery
+    ): Promise<ResponseCountPagesDto> {
+        return this.postsService.countPages(query)
+    }
+
     @Get(':id')
     findOne(
         @Param() params: FindOneParams
@@ -50,14 +60,14 @@ export class PostsController {
     @Get(':id/categories')
     findAllCategories(
         @Param() params: FindOneParams
-    ): Promise<Category[]> {
+    ): Promise<ResponseCategoryDto[]> {
         return this.postsService.findByIdCategories(params.id)
     }
 
     @Get(':id/comments')
     findAllComments(
         @Param() params: FindOneParams
-    ): Promise<Comment[]> {
+    ): Promise<ResponseCommentDto[]> {
         return this.postsService.findByIdComments(params.id)
     }
 

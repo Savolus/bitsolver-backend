@@ -32,10 +32,22 @@ export class CommentsService {
         return this.commentsModel.find({ user }).exec()
     }
 
-    findAllPostComments(
+    async findAllPostComments(
         post: Post
-    ): Promise<Comment[]> {
-        return this.commentsModel.find({ post }).exec()
+    ): Promise<ResponseCommentDto[]> {
+        const comments = await this.commentsModel.find({ post }).exec()
+        const commentsRating = await Promise.all(
+            comments.map(comment => this.likesService.getCommentRating(comment))
+        )
+
+        return comments.map((comment: any, index) => {
+            const commentDto = comment._doc
+
+            delete commentDto.__v
+            commentDto.rating = commentsRating[index]
+
+            return commentDto
+        })
     }
 
     async findOne(
@@ -51,7 +63,6 @@ export class CommentsService {
 
         delete commentDto.__v
 
-        commentDto.publish_date = comment._id.getTimestamp()
         commentDto.rating = await this.likesService.getCommentRating(comment)
 
         return comment

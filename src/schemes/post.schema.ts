@@ -5,7 +5,7 @@ import { PostStatusEnum } from '../types/enums/post-status.enum'
 import { Category } from './category.schema'
 import { User } from './user.schema'
 
-@Schema()
+@Schema({ timestamps: true })
 export class Post {
 	@Prop({
 		unique: true,

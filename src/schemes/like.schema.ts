@@ -6,7 +6,7 @@ import { Comment } from './comment.schema'
 import { Post } from './post.schema'
 import { User } from './user.schema'
 
-@Schema()
+@Schema({ timestamps: true })
 export class Like {
 	@Prop({
 		type: 'string',

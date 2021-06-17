@@ -7,6 +7,7 @@ export class ResponsePostDto {
     user: string
     status: PostStatusEnum
     ctegories: string[]
-    publish_date: string
+    createdAt: string
+    updatedAt: string
     rating: number
 }

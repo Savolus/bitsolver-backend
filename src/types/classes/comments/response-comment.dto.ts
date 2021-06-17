@@ -3,6 +3,7 @@ export class ResponseCommentDto {
     user: string
     post: string
     content: string
-    publish_date: string
+    createdAt: string
+    updatedAt: string
     rating: number
 }

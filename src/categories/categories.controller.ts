@@ -20,6 +20,8 @@ import { CategoriesService } from './categories.service'
 import { JwtAuthGuard } from '../guards/jwt-auth.guard'
 import { Category } from '../schemes/category.schema'
 import { Post } from '../schemes/post.schema'
+import { ResponsePostDto } from 'src/types/classes/posts/response-post.dto'
+import { ResponseCountPagesDto } from 'src/types/classes/response-count-pages.dto'
 
 
 @Controller('api/categories')
@@ -35,6 +37,13 @@ export class CategoriesController {
         return this.categoriesService.findAll(query)
     }
 
+    @Get('/pages')
+    countPages(
+        @Query() query: PaginationQuery
+    ): Promise<ResponseCountPagesDto> {
+        return this.categoriesService.countPages(query)
+    }
+
     @Get(':id')
     findOne(
         @Param() params: FindOneParams
@@ -44,9 +53,10 @@ export class CategoriesController {
 
     @Get(':id/posts')
     findPosts(
+        @Query() query: PaginationQuery,
         @Param() params: FindOneParams
-    ): Promise<Post[]> {
-        return this.categoriesService.findByIdPosts(params.id)
+    ): Promise<ResponsePostDto[]> {
+        return this.categoriesService.findByIdPosts(params.id, query)
     }
 
     @PostMethod()

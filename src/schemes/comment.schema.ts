@@ -4,7 +4,7 @@ import * as mongoose from 'mongoose'
 import { Post } from './post.schema'
 import { User } from './user.schema'
 
-@Schema()
+@Schema({ timestamps: true })
 export class Comment {
 	@Prop({
 		length: 2047,

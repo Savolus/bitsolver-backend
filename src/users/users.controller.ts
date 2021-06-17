@@ -24,6 +24,7 @@ import { AdminAccessGuard } from '../guards/admin-access.guard'
 import { JwtAuthGuard } from '../guards/jwt-auth.guard'
 import { UsersService } from './users.service'
 import { User } from '../schemes/user.schema'
+import { ResponseCountPagesDto } from 'src/types/classes/response-count-pages.dto'
 
 @Controller('api/users')
 export class UsersController {
@@ -36,6 +37,13 @@ export class UsersController {
         @Query() query: PaginationQuery
     ): Promise<ResponseUserDto[]> {
         return this.usersService.findAll(query)
+    }
+
+    @Get('/pages')
+    countPages(
+        @Query() query: PaginationQuery
+    ): Promise<ResponseCountPagesDto> {
+        return this.usersService.countPages(query)
     }
 
     @Get(':id')

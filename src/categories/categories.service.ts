@@ -15,6 +15,8 @@ import { PaginationQuery } from '../types/classes/pagination-query.dto'
 import { Category, CategoryDocument } from '../schemes/category.schema'
 import { PostsService } from '../posts/posts.service'
 import { Post } from '../schemes/post.schema'
+import { ResponsePostDto } from 'src/types/classes/posts/response-post.dto'
+import { ResponseCountPagesDto } from 'src/types/classes/response-count-pages.dto'
 
 @Injectable()
 export class CategoriesService {
@@ -30,8 +32,8 @@ export class CategoriesService {
     ): Promise<ResponseCategoryDto[]> {
         let categories: Category[] = []
 
-        if (query.page) {
-            const toSkip = (query.page - 1) * +query.size
+        if (+query.page) {
+            const toSkip = (+query.page - 1) * +query.size
 
             categories = await this.categoriesModel.find().skip(toSkip).limit(+query.size).exec()
         } else {
@@ -45,6 +47,15 @@ export class CategoriesService {
 
             return categoryDto
         })
+    }
+
+    async countPages(
+        query: PaginationQuery
+    ): Promise<ResponseCountPagesDto> {
+        const count = await this.categoriesModel.countDocuments().exec()
+        const pages = Math.ceil(count / +query.size)
+
+        return { pages }
     }
 
     async findOne(
@@ -76,15 +87,26 @@ export class CategoriesService {
     }
 
     async findByIdPosts(
-        id: string
-    ): Promise<Post[]> {
+        id: string,
+        query: PaginationQuery
+    ): Promise<ResponsePostDto[]> {
         const category = await this.findById(id)
 
-        return Promise.all(
+        let posts = await Promise.all(
             category.posts.map(
-                (post: any) => this.postsService.findById(post._id)
+                (post: any) => this.postsService.findOne(post._id)
             )
         )
+
+        if (+query.page) {
+            const toSkip = (+query.page - 1) * +query.size
+
+            posts = posts.slice(toSkip)
+            posts.length = +query.size
+            posts = posts.filter(post => post && post)
+        }
+
+        return posts
     }
 
     async createOne(

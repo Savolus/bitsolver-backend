@@ -10,6 +10,7 @@ import { CreateUserDto } from '../types/classes/users/create-user.dto'
 import { UpdateUserDto } from '../types/classes/users/update-user.dto'
 import { User, UserDocument } from '../schemes/user.schema'
 import { LikesService } from '../likes/likes.service'
+import { ResponseCountPagesDto } from 'src/types/classes/response-count-pages.dto'
 
 @Injectable()
 export class UsersService {
@@ -25,8 +26,8 @@ export class UsersService {
     ): Promise<ResponseUserDto[]> {
         let users: User[] = []
 
-        if (query.page) {
-            const toSkip = (query.page - 1) * +query.size
+        if (+query.page) {
+            const toSkip = (+query.page - 1) * +query.size
 
             users = await this.usersModel.find({}, '_id login full_name')
                 .skip(toSkip).limit(+query.size).exec()
@@ -45,6 +46,15 @@ export class UsersService {
 
             return userDto
         }, [])
+    }
+
+    async countPages(
+        query: PaginationQuery
+    ): Promise<ResponseCountPagesDto> {
+        const count = await this.usersModel.countDocuments().exec()
+        const pages = Math.ceil(count / +query.size)
+
+        return { pages }
     }
 
     async findOne(

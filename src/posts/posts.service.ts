@@ -17,6 +17,9 @@ import { Category } from '../schemes/category.schema'
 import { Comment } from '../schemes/comment.schema'
 import { Like } from '../schemes/like.schema'
 import { User } from '../schemes/user.schema'
+import { ResponseCommentDto } from 'src/types/classes/comments/response-comment.dto'
+import { ResponseCategoryDto } from 'src/types/classes/categories/response-category.dto'
+import { ResponseCountPagesDto } from 'src/types/classes/response-count-pages.dto'
 
 @Injectable()
 export class PostsService {
@@ -38,8 +41,10 @@ export class PostsService {
     ): Promise<ResponsePostDto[]> {
         let posts: Post[] = []
 
-        if (query.page) {
-            const toSkip = (query.page - 1) * +query.size
+        console.log(await this.postsModel.countDocuments().exec())
+
+        if (+query.page) {
+            const toSkip = (+query.page - 1) * +query.size
 
             posts = await this.postsModel.find().skip(toSkip).limit(+query.size).exec()
         } else {
@@ -54,11 +59,19 @@ export class PostsService {
             const postDto = post._doc
 
             delete postDto.__v
-            postDto.publish_date = post._id.getTimestamp()
             postDto.rating = postsRatings[index]
 
             return postDto
         }, [])
+    }
+
+    async countPages(
+        query: PaginationQuery
+    ): Promise<ResponseCountPagesDto> {
+        const count = await this.postsModel.countDocuments().exec()
+        const pages = Math.ceil(count / +query.size)
+
+        return { pages }
     }
 
     findAllByUser(
@@ -80,7 +93,6 @@ export class PostsService {
 
         delete postDto.__v
 
-        postDto.publish_date = post._id.getTimestamp()
         postDto.rating = await this.likesService.getPostRating(post)
 
         return postDto
@@ -100,19 +112,19 @@ export class PostsService {
 
     async findByIdCategories(
         id: string
-    ): Promise<Category[]> {
+    ): Promise<ResponseCategoryDto[]> {
         const post = await this.findById(id)
 
         return Promise.all(
             post.categories.map(
-                (category: any) => this.categoriesService.findById(category._id)
+                (category: any) => this.categoriesService.findOne(category._id)
             )
         )
     }
 
     async findByIdComments(
         id: string
-    ): Promise<Comment[]> {
+    ): Promise<ResponseCommentDto[]> {
         const post = await this.findById(id)
 
         return this.commentsService.findAllPostComments(post)
