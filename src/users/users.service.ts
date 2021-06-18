@@ -11,6 +11,7 @@ import { UpdateUserDto } from '../types/classes/users/update-user.dto'
 import { User, UserDocument } from '../schemes/user.schema'
 import { LikesService } from '../likes/likes.service'
 import { ResponseCountPagesDto } from 'src/types/classes/response-count-pages.dto'
+import { AWS_BUCKET, s3 } from '../config/configuration'
 
 @Injectable()
 export class UsersService {
@@ -29,10 +30,10 @@ export class UsersService {
         if (+query.page) {
             const toSkip = (+query.page - 1) * +query.size
 
-            users = await this.usersModel.find({}, '_id login full_name email')
+            users = await this.usersModel.find({}, '_id login full_name email avatar')
                 .skip(toSkip).limit(+query.size).exec()
         } else {
-            users = await this.usersModel.find({}, '_id login full_name email').exec()
+            users = await this.usersModel.find({}, '_id login full_name email avatar').exec()
         }
 
         const usersRatings = await Promise.all(
@@ -60,7 +61,7 @@ export class UsersService {
     async findOne(
         id: string
     ): Promise<ResponseUserDto> {
-        const user: any = await this.usersModel.findById(id, '_id login full_name email').exec()
+        const user: any = await this.usersModel.findById(id, '_id login full_name email avatar').exec()
 
         if (!user) {
             throw new NotFoundException('User not found')
@@ -121,6 +122,32 @@ export class UsersService {
         user.password = await hash(user.password, 10)
 
         return user.save()
+    }
+
+    async uploadAvatar(
+        id: string,
+        file: Express.Multer.File
+    ) {
+        const fileUploading = new Promise<string>((resolve, reject) => {
+            s3.upload({
+                Bucket: AWS_BUCKET,
+                Key: `${id}.png`,
+                Body: file.buffer,
+                ACL: 'public-read'
+            }, (err, data) => {
+                err && reject(err)
+
+                resolve(data.Location)
+            })
+        })
+
+        const avatar = await fileUploading
+
+        await this.usersModel.findByIdAndUpdate(id, { avatar }, { new: true })
+
+        return {
+            avatar
+        }
     }
 
     async updateOne(

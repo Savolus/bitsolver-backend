@@ -73,13 +73,16 @@ export class UsersController {
     }
 
     // sometimes
-    @Patch('avatar')
+    @Post('avatar')
     @UseGuards(JwtAuthGuard)
     @UseInterceptors(FileInterceptor('avatar'))
     uploadAvatar(
+        @Request() req,
         @UploadedFile() file: Express.Multer.File
     ) {
-        console.log(file)
+        const user = req.user as IJwtUser
+
+        return this.usersService.uploadAvatar(user.sub, file)
     }
 
     @Delete(':id')

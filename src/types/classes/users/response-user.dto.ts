@@ -3,6 +3,6 @@ export class ResponseUserDto {
 	login: string
 	full_name: string
 	email: string
-	// profile_picture: string
+	avatar: string
 	rating: number
 }

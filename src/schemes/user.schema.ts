@@ -28,6 +28,11 @@ export class User {
 	full_name: string
 
 	@Prop({
+		default: 'https://bitsolver.s3.eu-central-1.amazonaws.com/default.png'
+	})
+	avatar: string
+
+	@Prop({
 		type: 'string',
 		enum: UserRoleEnum,
 		default: UserRoleEnum.USER
