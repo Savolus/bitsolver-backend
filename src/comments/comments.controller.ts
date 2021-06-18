@@ -39,6 +39,13 @@ export class CommentsController {
         return this.commentsService.findByIdLikes(params.id)
     }
 
+    @Get(':id/likes/:userId')
+    findLike(
+        @Param() params: FindOneParams
+    ): Promise<Like> {
+        return this.commentsService.findByIdLike(params.id, params.userId)
+    }
+
     @Post(':id/likes')
     @UseGuards(JwtAuthGuard)
     createOneLike(

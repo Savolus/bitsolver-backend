@@ -144,6 +144,13 @@ export class LikesService {
         return this.likesModel.find({ comment }).exec()
     }
 
+    async findCommentLike(
+        comment: Comment,
+        user: User
+    ): Promise<Like> {
+        return this.likesModel.findOne({ comment, user }).exec()
+    }
+
     async createCommentLike(
         user: User,
         comment: Comment,

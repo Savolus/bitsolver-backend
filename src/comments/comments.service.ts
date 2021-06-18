@@ -88,6 +88,16 @@ export class CommentsService {
         return this.likesService.findAllCommentLikes(comment)
     }
 
+    async findByIdLike(
+        id: string,
+        userId: string
+    ): Promise<Like> {
+        const comment = await this.findById(id)
+        const user = await this.usersService.findById(userId)
+
+        return this.likesService.findCommentLike(comment, user)
+    }
+
     async createOne(
         userId: string,
         postId: string,
