@@ -1,17 +1,23 @@
-import { ConflictException, forwardRef, Inject, Injectable, NotFoundException } from '@nestjs/common'
+import {
+    ConflictException,
+    forwardRef,
+    Inject,
+    Injectable,
+    NotFoundException
+} from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
 import { hash } from 'bcrypt'
 
+import { ResponseCountPagesDto } from '../types/classes/response-count-pages.dto'
 import { ResponseUserDto } from '../types/classes/users/response-user.dto'
 import { RegisterUserDto } from '../types/classes/auth/register-user.dto'
 import { PaginationQuery } from '../types/classes/pagination-query.dto'
 import { CreateUserDto } from '../types/classes/users/create-user.dto'
 import { UpdateUserDto } from '../types/classes/users/update-user.dto'
 import { User, UserDocument } from '../schemes/user.schema'
-import { LikesService } from '../likes/likes.service'
-import { ResponseCountPagesDto } from 'src/types/classes/response-count-pages.dto'
 import { AWS_BUCKET, s3 } from '../config/configuration'
+import { LikesService } from '../likes/likes.service'
 
 @Injectable()
 export class UsersService {

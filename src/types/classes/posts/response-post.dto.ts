@@ -1,4 +1,4 @@
-import { PostStatusEnum } from "src/types/enums/post-status.enum"
+import { PostStatusEnum } from "../../enums/post-status.enum"
 
 export class ResponsePostDto {
     _id: string

@@ -1,7 +1,16 @@
-import { ConflictException, forwardRef, Inject, Injectable, NotFoundException } from '@nestjs/common'
+import {
+    ConflictException,
+    forwardRef,
+    Inject,
+    Injectable,
+    NotFoundException
+} from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
 
+import { ResponseCategoryDto } from '../types/classes/categories/response-category.dto'
+import { ResponseCommentDto } from '../types/classes/comments/response-comment.dto'
+import { ResponseCountPagesDto } from '../types/classes/response-count-pages.dto'
 import { CreateCommentDto } from '../types/classes/comments/create-comment.dto'
 import { ResponsePostDto } from '../types/classes/posts/response-post.dto'
 import { PaginationQuery } from '../types/classes/pagination-query.dto'
@@ -13,13 +22,9 @@ import { CommentsService } from '../comments/comments.service'
 import { Post, PostDocument } from '../schemes/post.schema'
 import { LikesService } from '../likes/likes.service'
 import { UsersService } from '../users/users.service'
-import { Category } from '../schemes/category.schema'
 import { Comment } from '../schemes/comment.schema'
 import { Like } from '../schemes/like.schema'
 import { User } from '../schemes/user.schema'
-import { ResponseCommentDto } from 'src/types/classes/comments/response-comment.dto'
-import { ResponseCategoryDto } from 'src/types/classes/categories/response-category.dto'
-import { ResponseCountPagesDto } from 'src/types/classes/response-count-pages.dto'
 
 @Injectable()
 export class PostsService {

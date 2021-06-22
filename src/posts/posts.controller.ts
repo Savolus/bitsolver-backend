@@ -11,6 +11,9 @@ import {
     Query
 } from '@nestjs/common'
 
+import { ResponseCategoryDto } from '../types/classes/categories/response-category.dto'
+import { ResponseCommentDto } from '../types/classes/comments/response-comment.dto'
+import { ResponseCountPagesDto } from '../types/classes/response-count-pages.dto'
 import { CreateCommentDto } from '../types/classes/comments/create-comment.dto'
 import { ResponsePostDto } from '../types/classes/posts/response-post.dto'
 import { IJwtUser } from '../types/interfaces/users/jwt-user.interface'
@@ -20,15 +23,10 @@ import { CreatePostDto } from '../types/classes/posts/create-post.dto'
 import { UpdatePostDto } from '../types/classes/posts/update-post.dto'
 import { FindOneParams } from '../types/classes/find-one-param.dto'
 import { JwtAuthGuard } from '../guards/jwt-auth.guard'
-import { Category } from '../schemes/category.schema'
 import { Comment } from '../schemes/comment.schema'
+import { PostsService } from './posts.service'
 import { Like } from '../schemes/like.schema'
 import { Post } from '../schemes/post.schema'
-import { PostsService } from './posts.service'
-import { UserQuery } from 'src/types/classes/users/user-query.dto'
-import { ResponseCommentDto } from 'src/types/classes/comments/response-comment.dto'
-import { ResponseCategoryDto } from 'src/types/classes/categories/response-category.dto'
-import { ResponseCountPagesDto } from 'src/types/classes/response-count-pages.dto'
 
 @Controller('api/posts')
 export class PostsController {

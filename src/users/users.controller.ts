@@ -14,6 +14,7 @@ import {
 } from '@nestjs/common'
 import { FileInterceptor } from '@nestjs/platform-express'
 
+import { ResponseCountPagesDto } from '../types/classes/response-count-pages.dto'
 import { ResponseUserDto } from '../types/classes/users/response-user.dto'
 import { IJwtUser } from '../types/interfaces/users/jwt-user.interface'
 import { PaginationQuery } from '../types/classes/pagination-query.dto'
@@ -24,7 +25,6 @@ import { AdminAccessGuard } from '../guards/admin-access.guard'
 import { JwtAuthGuard } from '../guards/jwt-auth.guard'
 import { UsersService } from './users.service'
 import { User } from '../schemes/user.schema'
-import { ResponseCountPagesDto } from 'src/types/classes/response-count-pages.dto'
 
 @Controller('api/users')
 export class UsersController {

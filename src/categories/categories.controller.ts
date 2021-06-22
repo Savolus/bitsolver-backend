@@ -13,16 +13,14 @@ import {
 import { ResponseCategoryDto } from '../types/classes/categories/response-category.dto'
 import { CreateCategoryDto } from '../types/classes/categories/create-category.dto'
 import { UpdateCategoryDto } from '../types/classes/categories/update-category.dto'
+import { ResponseCountPagesDto } from '../types/classes/response-count-pages.dto'
+import { ResponsePostDto } from '../types/classes/posts/response-post.dto'
 import { PaginationQuery } from '../types/classes/pagination-query.dto'
 import { FindOneParams } from '../types/classes/find-one-param.dto'
 import { AdminAccessGuard } from '../guards/admin-access.guard'
 import { CategoriesService } from './categories.service'
 import { JwtAuthGuard } from '../guards/jwt-auth.guard'
 import { Category } from '../schemes/category.schema'
-import { Post } from '../schemes/post.schema'
-import { ResponsePostDto } from 'src/types/classes/posts/response-post.dto'
-import { ResponseCountPagesDto } from 'src/types/classes/response-count-pages.dto'
-
 
 @Controller('api/categories')
 export class CategoriesController {

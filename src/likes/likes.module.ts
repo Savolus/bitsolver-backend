@@ -1,5 +1,5 @@
-import { MongooseModule } from '@nestjs/mongoose'
 import { forwardRef, Module } from '@nestjs/common'
+import { MongooseModule } from '@nestjs/mongoose'
 
 import { CommentsModule } from '../comments/comments.module'
 import { Like, LikeSchema } from '../schemes/like.schema'

@@ -2,6 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
 import * as mongoose from 'mongoose'
 
 import { UserRoleEnum } from '../types/enums/user-role.enum'
+import { AWS_BUCKET_URL } from '../config/configuration'
 
 @Schema()
 export class User {
@@ -28,7 +29,7 @@ export class User {
 	full_name: string
 
 	@Prop({
-		default: 'https://bitsolver.s3.eu-central-1.amazonaws.com/default.png'
+		default: `${AWS_BUCKET_URL}/default.png`
 	})
 	avatar: string
 

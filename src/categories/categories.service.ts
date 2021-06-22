@@ -11,12 +11,11 @@ import { Model } from 'mongoose'
 import { ResponseCategoryDto } from '../types/classes/categories/response-category.dto'
 import { CreateCategoryDto } from '../types/classes/categories/create-category.dto'
 import { UpdateCategoryDto } from '../types/classes/categories/update-category.dto'
+import { ResponseCountPagesDto } from '../types/classes/response-count-pages.dto'
+import { ResponsePostDto } from '../types/classes/posts/response-post.dto'
 import { PaginationQuery } from '../types/classes/pagination-query.dto'
 import { Category, CategoryDocument } from '../schemes/category.schema'
 import { PostsService } from '../posts/posts.service'
-import { Post } from '../schemes/post.schema'
-import { ResponsePostDto } from 'src/types/classes/posts/response-post.dto'
-import { ResponseCountPagesDto } from 'src/types/classes/response-count-pages.dto'
 
 @Injectable()
 export class CategoriesService {
