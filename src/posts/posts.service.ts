@@ -218,8 +218,8 @@ export class PostsService {
             )
 
             await Promise.all(
-                categories.map(
-                    (category: any) => this.categoriesService.updatePostsAddOne(category._id, post)
+                postDto.categories.map(
+                    (categoryId: any) => this.categoriesService.updatePostsAddOne(categoryId, post)
                 )
             )
 
