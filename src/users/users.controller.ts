@@ -85,9 +85,19 @@ export class UsersController {
         return this.usersService.uploadAvatar(user.sub, file)
     }
 
+    @Delete()
+    @UseGuards(JwtAuthGuard)
+    deleteOne(
+        @Request() req
+    ): Promise<User> {
+        const user = req.user as IJwtUser
+
+        return this.usersService.deleteOne(user.sub)
+    }
+
     @Delete(':id')
     @UseGuards(JwtAuthGuard, AdminAccessGuard)
-    deleteOne(
+    deleteOneByAdmin(
         @Param() params: FindOneParams
     ): Promise<User> {
         return this.usersService.deleteOne(params.id)

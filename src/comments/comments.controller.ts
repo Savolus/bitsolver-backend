@@ -4,6 +4,7 @@ import {
     Get,
     Param,
     Patch,
+    Delete,
     Post,
     Request,
     UseGuards
@@ -67,7 +68,7 @@ export class CommentsController {
         return this.commentsService.updateOne(params.id, commentDto)
     }
 
-    @Patch(':id')
+    @Delete(':id')
     @UseGuards(JwtAuthGuard)
     deleteOne(
         @Param() params: FindOneParams

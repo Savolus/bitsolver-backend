@@ -15,15 +15,21 @@ import { RegisterUserDto } from '../types/classes/auth/register-user.dto'
 import { PaginationQuery } from '../types/classes/pagination-query.dto'
 import { CreateUserDto } from '../types/classes/users/create-user.dto'
 import { UpdateUserDto } from '../types/classes/users/update-user.dto'
+import { CommentsService } from '../comments/comments.service'
 import { User, UserDocument } from '../schemes/user.schema'
 import { AWS_BUCKET, s3 } from '../config/configuration'
 import { LikesService } from '../likes/likes.service'
+import { PostsService } from '../posts/posts.service'
 
 @Injectable()
 export class UsersService {
     constructor(
         @InjectModel(User.name)
         private readonly usersModel: Model<UserDocument>,
+        @Inject(forwardRef(() => PostsService))
+        private readonly postsService: PostsService,
+        @Inject(forwardRef(() => CommentsService))
+        private readonly commentsService: CommentsService,
         @Inject(forwardRef(() => LikesService))
         private readonly likesService: LikesService
     ) {}
@@ -190,9 +196,25 @@ export class UsersService {
         ).exec()
     }
 
-    deleteOne(
+    async deleteOne(
         id: string
     ): Promise<User> {
+        const user = await this.findById(id)
+        const posts = await this.postsService.findAllByUser(user)
+        const comments = await this.commentsService.findAllByUser(user)
+
+        await Promise.all(
+            comments.map(
+                (comment: any) => this.commentsService.deleteOne(comment._id)
+            )
+        )
+
+        await Promise.all(
+            posts.map(
+                (post: any) => this.postsService.deleteOne(post._id)
+            )
+        )
+
         return this.usersModel.findByIdAndDelete(id).exec()
     }
 }
