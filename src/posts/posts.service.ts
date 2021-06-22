@@ -206,16 +206,23 @@ export class PostsService {
         id: string,
         postDto: UpdatePostDto
     ): Promise<Post> {
-        if (postDto.title) {
-            const tempPost = await this.postsModel.findOne({
-                title: postDto.title
-            }).exec()
+        const post = await this.findById(id)
 
-            if (tempPost) {
-                throw new ConflictException('Post with this title already exists')
-            }
-        }
         if (postDto.categories) {
+            const categories = await this.findByIdCategories(id)
+
+            await Promise.all(
+                categories.map(
+                    (category: any) => this.categoriesService.updatePostsRemoveOne(category._id, post)
+                )
+            )
+
+            await Promise.all(
+                categories.map(
+                    (category: any) => this.categoriesService.updatePostsAddOne(category._id, post)
+                )
+            )
+
             postDto.categories = await Promise.all(
                 postDto.categories.map(
                     category => this.categoriesService.findById(category)
