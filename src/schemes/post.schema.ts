@@ -8,7 +8,6 @@ import { User } from './user.schema'
 @Schema({ timestamps: true })
 export class Post {
 	@Prop({
-		unique: true,
 		required: true
 	})
 	title: string
