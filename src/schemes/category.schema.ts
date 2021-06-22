@@ -12,7 +12,7 @@ export class Category {
 	title: string
 
 	@Prop({
-		length: 1023,
+		length: 2047,
 		required: true
 	})
 	description: string

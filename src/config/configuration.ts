@@ -29,7 +29,7 @@ export const AWS_KEY = process.env.AWS_KEY
 export const AWS_SECRET = process.env.AWS_SECRET
 export const AWS_BUCKET = process.env.AWS_BUCKET
 
-export const AWS_BUCKET_URL = `https://${AWS_BUCKET}.s3.amazonaws.com/`
+export const AWS_BUCKET_URL = `https://${AWS_BUCKET}.s3.amazonaws.com`
 
 export const s3 = new S3({
     accessKeyId: AWS_KEY,

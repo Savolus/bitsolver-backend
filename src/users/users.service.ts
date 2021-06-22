@@ -31,16 +31,15 @@ export class UsersService {
     async findAll(
         query: PaginationQuery
     ): Promise<ResponseUserDto[]> {
-        let users: User[] = []
-
+        const queryBuilder = this.usersModel.find({}, '_id login full_name email avatar')
+        
         if (+query.page) {
             const toSkip = (+query.page - 1) * +query.size
 
-            users = await this.usersModel.find({}, '_id login full_name email avatar')
-                .skip(toSkip).limit(+query.size).exec()
-        } else {
-            users = await this.usersModel.find({}, '_id login full_name email avatar').exec()
+            queryBuilder.skip(toSkip).limit(+query.size)
         }
+
+        const users = await queryBuilder.exec()
 
         const usersRatings = await Promise.all(
             users.map(user => this.likesService.getUserRating(user))

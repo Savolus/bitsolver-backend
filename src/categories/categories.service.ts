@@ -29,15 +29,15 @@ export class CategoriesService {
     async findAll(
         query: PaginationQuery
     ): Promise<ResponseCategoryDto[]> {
-        let categories: Category[] = []
+        const queryBuilder = this.categoriesModel.find()
 
         if (+query.page) {
             const toSkip = (+query.page - 1) * +query.size
 
-            categories = await this.categoriesModel.find().skip(toSkip).limit(+query.size).exec()
-        } else {
-            categories = await this.categoriesModel.find().exec()
+            queryBuilder.skip(toSkip).limit(+query.size)
         }
+
+        const categories = await queryBuilder.exec()
 
         return categories.map((category: any) => {
             const categoryDto = category._doc

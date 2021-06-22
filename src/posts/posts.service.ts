@@ -44,17 +44,15 @@ export class PostsService {
     async findAll(
         query: PaginationQuery
     ): Promise<ResponsePostDto[]> {
-        let posts: Post[] = []
-
-        console.log(await this.postsModel.countDocuments().exec())
+        const queryBuilder = this.postsModel.find().sort({ createdAt: -1 }) 
 
         if (+query.page) {
             const toSkip = (+query.page - 1) * +query.size
 
-            posts = await this.postsModel.find().skip(toSkip).limit(+query.size).exec()
-        } else {
-            posts = await this.postsModel.find().exec()
+            queryBuilder.skip(toSkip).limit(+query.size)
         }
+
+        const posts = await queryBuilder.exec()
 
         const postsRatings = await Promise.all(
             posts.map(post => this.likesService.getPostRating(post))
