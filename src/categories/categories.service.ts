@@ -29,7 +29,7 @@ export class CategoriesService {
     async findAll(
         query: PaginationQuery
     ): Promise<ResponseCategoryDto[]> {
-        const queryBuilder = this.categoriesModel.find()
+        const queryBuilder = this.categoriesModel.find().sort({ title: 1 })
 
         if (+query.page) {
             const toSkip = (+query.page - 1) * +query.size

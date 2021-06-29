@@ -37,7 +37,7 @@ export class UsersService {
     async findAll(
         query: PaginationQuery
     ): Promise<ResponseUserDto[]> {
-        const queryBuilder = this.usersModel.find({}, '_id login full_name email avatar')
+        const queryBuilder = this.usersModel.find({}, '_id login full_name email avatar').sort({ login: 1 })
         
         if (+query.page) {
             const toSkip = (+query.page - 1) * +query.size
